@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class ProdutosDAO {
     
-    Connection conn;
+    Connection conn = new conectaDAO().connectDB();
     PreparedStatement prep;
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
@@ -20,7 +20,6 @@ public class ProdutosDAO {
     public void cadastrarProduto (ProdutosDTO produto){              
         String comando = "insert into produtos values (?,?,?,?)";              
         try {
-            conn = new conectaDAO().connectDB();
             prep = conn.prepareStatement(comando);
             prep.setInt(1, produto.getId());
             prep.setString(2,produto.getNome());
@@ -34,7 +33,22 @@ public class ProdutosDAO {
     }
     
     public ArrayList<ProdutosDTO> listarProdutos(){
-        
+        String consulta = "Select * from produtos";
+        try{
+            prep = conn.prepareStatement(consulta);
+            resultset = prep.executeQuery();
+            while(resultset.next()){
+                ProdutosDTO pro = new ProdutosDTO();
+                pro.setId(resultset.getInt("id"));
+                pro.setNome(resultset.getString("nome"));
+                pro.setValor(resultset.getInt("valor"));
+                pro.setStatus(resultset.getString("status"));
+                listagem.add(pro);
+            }
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Falha na listagem de produtos");
+        }
         return listagem;
     }
     

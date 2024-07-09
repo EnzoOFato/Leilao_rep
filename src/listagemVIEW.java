@@ -1,11 +1,33 @@
+import java.util.List;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 public class listagemVIEW extends javax.swing.JFrame {
+    
+    private final String[] colunas = {"ID","Nome","Valor","Status"};
+    DefaultTableModel modelo = new DefaultTableModel(colunas,0);
 
     public listagemVIEW() {
         initComponents();
-        listarProdutos();
+        table();
+    }
+    
+    public void table(){
+        ProdutosDAO prod = new ProdutosDAO();
+        List <ProdutosDTO> lista = prod.listarProdutos();
+        if(!lista.isEmpty()){
+            for(ProdutosDTO p : lista){
+                String idTbl = p.getId() + "";
+                String valorTbl = p.getValor() + "";
+                String[] rows = {idTbl, p.getNome(), valorTbl, p.getStatus()};
+                modelo.addRow(rows);
+            }
+            listaProdutos.setModel(modelo);
+        }
+        else{
+            modelo = new DefaultTableModel(colunas,0);
+            listaProdutos.setModel(modelo);
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -132,6 +154,8 @@ public class listagemVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        cadastroVIEW tela = new cadastroVIEW();
+        tela.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 

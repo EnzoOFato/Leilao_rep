@@ -20,7 +20,7 @@ public class ProdutosDTO {
         return status;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
