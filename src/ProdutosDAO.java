@@ -6,9 +6,6 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 public class ProdutosDAO {
     
@@ -52,8 +49,17 @@ public class ProdutosDAO {
         return listagem;
     }
     
-    
-    
-        
+    public void venderProduto(int id){
+        String update = "update produtos set status = 'vendido' where id = ?";
+        try{
+            prep = conn.prepareStatement(update);
+            prep.setInt(1, id);
+            prep.executeUpdate();
+            JOptionPane.showMessageDialog(null, "O status do produto " + id + " foi alterado com sucesso!");
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Falha ao atualizar status: \n"+e.getMessage());
+        }
+    }       
 }
 

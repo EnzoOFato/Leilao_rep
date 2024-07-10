@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class listagemVIEW extends javax.swing.JFrame {
@@ -140,12 +141,19 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
-        
-        ProdutosDAO produtosdao = new ProdutosDAO();
-        
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+        String id = id_produto_venda.getText();       
+        if(id != ""){
+            ProdutosDAO produtosdao = new ProdutosDAO();        
+            produtosdao.venderProduto(Integer.parseInt(id));
+            listarProdutos();
+        }
+        else if(Integer.parseInt(id) > Integer.parseInt((String) listaProdutos.getValueAt(listaProdutos.getModel().getRowCount(),0))){
+            JOptionPane.showMessageDialog(null, "Selecione um id viavel");
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Por favor forneça o id do produto a ser vendido");
+        }
+        btnVender.setText("");
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
