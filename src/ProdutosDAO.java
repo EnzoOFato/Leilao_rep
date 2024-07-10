@@ -6,9 +6,6 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 public class ProdutosDAO {
     
@@ -16,6 +13,7 @@ public class ProdutosDAO {
     PreparedStatement prep;
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+    ArrayList<ProdutosDTO> vendas = new ArrayList<>();
     
     public void cadastrarProduto (ProdutosDTO produto){              
         String comando = "insert into produtos values (?,?,?,?)";              
@@ -52,8 +50,36 @@ public class ProdutosDAO {
         return listagem;
     }
     
+    public void venderProduto(int id){
+        String update = "update produtos set status = 'vendido' where id = ?";
+        try{
+            prep = conn.prepareStatement(update);
+            prep.setInt(1, id);
+            prep.executeUpdate();
+            JOptionPane.showMessageDialog(null, "O status do produto " + id + " foi alterado com sucesso!");
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Falha ao atualizar status: \n"+e.getMessage());
+        }
+    }
     
-    
-        
+    public ArrayList<ProdutosDTO> listarProdutosVendidos(){
+        String consulta = "select * from produtos where status = 'Vendido' ";
+        try{
+            prep = conn.prepareStatement(consulta);
+            resultset = prep.executeQuery();
+            while(resultset.next()){
+                ProdutosDTO pro = new ProdutosDTO();
+                pro.setId(resultset.getInt("id"));
+                pro.setNome(resultset.getString("nome"));
+                pro.setValor(resultset.getInt("valor"));
+                pro.setStatus(resultset.getString("status"));
+                vendas.add(pro);
+            }
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Erro ao listar vendas " + e.getMessage());
+        }
+        return vendas;
+    }
 }
 
