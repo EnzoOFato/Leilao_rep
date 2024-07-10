@@ -13,6 +13,7 @@ public class ProdutosDAO {
     PreparedStatement prep;
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+    ArrayList<ProdutosDTO> vendas = new ArrayList<>();
     
     public void cadastrarProduto (ProdutosDTO produto){              
         String comando = "insert into produtos values (?,?,?,?)";              
@@ -60,6 +61,25 @@ public class ProdutosDAO {
         catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Falha ao atualizar status: \n"+e.getMessage());
         }
-    }       
+    }
+    
+    public ArrayList<ProdutosDTO> listarProdutosVendidos(){
+        String consulta = "select * from produtos where status = 'Vendido' ";
+        try{
+            prep = conn.prepareStatement(consulta);
+            resultset = prep.executeQuery();
+            while(resultset.next()){
+                ProdutosDTO pro = new ProdutosDTO();
+                pro.setId(resultset.getInt("id"));
+                pro.setNome(resultset.getString("nome"));
+                pro.setValor(resultset.getInt("valor"));
+                pro.setStatus(resultset.getString("status"));
+                vendas.add(pro);
+            }
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Erro ao listar vendas " + e.getMessage());
+        }
+        return vendas;
+    }
 }
 

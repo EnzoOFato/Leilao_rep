@@ -4,14 +4,14 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class listagemVIEW extends javax.swing.JFrame {
-    
-    private final String[] colunas = {"ID","Nome","Valor","Status"};
-    DefaultTableModel modelo = new DefaultTableModel(colunas,0);
 
     public listagemVIEW() {
         initComponents();
         table();
     }
+    
+    private final String[] colunas = {"ID","Nome","Valor","Status"};
+    DefaultTableModel modelo = new DefaultTableModel(colunas,0);
     
     public void table(){
         ProdutosDAO prod = new ProdutosDAO();
